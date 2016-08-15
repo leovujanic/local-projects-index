@@ -98,7 +98,18 @@ Configuration
    - default documention links that will be shown if version fetching fails. In other case it generates documentation links for your installed version of apache and mysql
   
   
+Naming convention for hosts file
+================================
+   
+   
+Alias name/title should be written one line before alias definition.
+It should start with a hash sign and one space, the rest will be used as alias title.
+   
+   # Alias_name
+   127.0.0.1 www.someAddress.net
   
+
+
 Working Within Git repos
 ========================
 > If you are working within git repo and you want to ignore this file without placing it in .gitignore, you can add it to .git/info/exclude. In that way, the file won't be added to the git repo and every team member can have own index file with custom settings.
