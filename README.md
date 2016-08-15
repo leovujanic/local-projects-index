@@ -106,7 +106,6 @@ Alias name/title should be written one line before alias definition.
 It should start with a hash sign and one space, the rest will be used as alias title.
    
    # Alias_name
-
    127.0.0.1 www.someDomain.ext
   
 
