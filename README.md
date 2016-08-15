@@ -68,9 +68,11 @@ $params = [
 Configuration
 =============
 1. mysql
-..* mysql connection data
+  
+   mysql connection data
 2. pma
-..* link to local phpMyAdmin
+  
+   link to local phpMyAdmin
 3. hosts
 ..* path to hosts file
 4. server
