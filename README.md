@@ -1,2 +1,2 @@
 # local_projects_index
-Index file fol local projects directory.
+> Index file for local projects directory.
