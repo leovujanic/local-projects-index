@@ -65,10 +65,24 @@ $params = [
 ];
 ```
 
-
-
+Configuration
+=============
+1. mysql
+..* mysql connection data
+2. pma
+..* link to local phpMyAdmin
+3. hosts
+..* path to hosts file
+4. server
+..* Connected live server name and url
+5. helpersUrl
+..* list of urls to be printed in footer
+6. projectsListIgnore
+..* folders to be ignored in listing
+7. documentation
+..* default documention links that will be shown if version fetching fails. In other case it generates documentation links for your installed version of apache and mysql
 
 Working Within Git repos
 ========================
-> If you are working within git repo and you want to ignore this file without placing it in .gitignore, you can add it to .git/exclude/info. In that way, the file won't be added to the git repo and every team member can have own index file with custom settings.
+> If you are working within git repo and you want to ignore this file without placing it in .gitignore, you can add it to .git/info/exclude. In that way, the file won't be added to the git repo and every team member can have own index file with custom settings.
 
