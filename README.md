@@ -8,7 +8,8 @@ This is w - a -  m - p like index file. It shows information about PHP, MySQL, a
 
 It looks like this:
 
-![alt text](local_projects_index/project_index.png "Projects Index Preview")
+![alt text](https://github.com/leovujanic/local_projects_index/blob/master/project_index.png "Projects Index Preview")
+
 
 
 
