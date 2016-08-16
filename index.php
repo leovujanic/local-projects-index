@@ -12,34 +12,40 @@ mysqli_report(MYSQLI_REPORT_STRICT);
 //params
 $params = [
     'mysql'              => [
-        'host' => 'localhost',                                      // mysql host
-        'user' => 'infoUser',                                       // mysql username
-        'pass' => 'infoPass',                                       // mysql password
+        'host' => 'localhost',
+        'user' => 'infoUser',
+        'pass' => 'infoPass',
     ],
-    'pma'                => 'http://localhost/phpmyadmin/',         // pma address
-    'hosts'              => '/private/etc/hosts',                   // your hosts file
+    'pma'                => 'http://localhost/phpmyadmin/',
+    'hosts'              => '/private/etc/hosts',
     'server'             => [
-        'liveUrl'  => '#',                                          // connected Server url
-        'liveName' => 'Live Server',                                // connected Server name
+        'liveUrl'  => '#',
+        'liveName' => 'Live Server',
     ],
-    'helpersUrl'         => [                                       // footer links
+    'helpersUrl'         => [
         'http://www.github.com/login' => 'Git Hub',
     ],
-    'projectsListIgnore' => [                                       // projects to be ignored in listing
+    'projectsListIgnore' => [
         '.',
         '..',
         '.git',
         '.idea',
     ],
+    'favorites' => [
+        'someProject',
+    ],
     'documentation'      => [
         'mysql'  => [
-            'defaultLink' => 'http://dev.mysql.com/doc/',           // default mysql documentation link
+            'defaultLink' => 'http://dev.mysql.com/doc/',
+            // default mysql documentation link
         ],
         'php'    => [
-            'defaultLink' => 'http://php.net/manual/en/index.php',  // default php documentation link
+            'defaultLink' => 'http://php.net/manual/en/index.php',
+            // default php documentation link
         ],
         'apache' => [
-            'defaultLink' => 'https://httpd.apache.org/',           // default apach documentation link
+            'defaultLink' => 'https://httpd.apache.org/',
+            // default apach documentation link
         ],
     ],
 ];
@@ -235,9 +241,15 @@ AAElFTkSuQmCC
 EOFILE;
 
 $images['pngBook'] = <<<EOFILE
-iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABkklEQVQ4T2NkoBAwUqifgboGaFuGCjFxMahzMDOyfvv27ePVI1suMTAw/Ne189fl4ODk/fr7+1/m339uXT6y9T3M5WAX6Dj7iZvq6KerKcvG6GmoyP/795/t989frw+dvHDvPyPDf2tjfUV2DlZxRmbmn1dv3H5w++7D5Scv3Z559cDqF2ADFMPiajWlpUtnl+TwIofJyzfvGBj+/2cQFxVGCaq03imfrz9+0nNv9eImsAFysQntejKyFTNzMlAUXrp2mwEUSnqaqqgGTJnJcPXxo84HSxZUDCcDdCRlKkKszBmuvnzB8Pf/fwZZQQEGPXEpcCBefPmc4cmH9wwsTMwM2hISDKuPHme49vQpahgw8XKWfWNhfMb8+/9bBsb/vxn//OVmFhJQ+s/4l4Hh1ce7fxgYPjOysbD8ZWYS5WJklWZ4/6kHHohKIXE+rD/+8LN8+XaV8d//t/9///jKxM4j9kGJP/3///+Mwg+/dP/59/rjn998fKxMDCI/hbm1/zAzfLm/dvlm6iZlcjIWxS4AALjUzBE7WWHKAAAAAElFTkSuQmCC
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABkklEQVQ4T2NkoBAwUqifgboGaFuGC
+jFxMahzMDOyfvv27ePVI1suMTAw/Ne189fl4ODk/fr7+1/m339uXT6y9T3M5WAX6Dj7iZvq6KerKc
+vG6GmoyP/795/t989frw+dvHDvPyPDf2tjfUV2DlZxRmbmn1dv3H5w++7D5Scv3Z559cDqF2ADFMP
+iajWlpUtnl+TwIofJyzfvGBj+/2cQFxVGCaq03imfrz9+0nNv9eImsAFysQntejKyFTNzMlAUXrp2
+mwEUSnqaqqgGTJnJcPXxo84HSxZUDCcDdCRlKkKszBmuvnzB8Pf/fwZZQQEGPXEpcCBefPmc4cmH9
+wwsTMwM2hISDKuPHme49vQpahgw8XKWfWNhfMb8+/9bBsb/vxn//OVmFhJQ+s/4l4Hh1ce7fxgYPj
+OysbD8ZWYS5WJklWZ4/6kHHohKIXE+rD/+8LN8+XaV8d//t/9///jKxM4j9kGJP/3///+Mwg+/dP/
+59/rjn998fKxMDCI/hbm1/zAzfLm/dvlm6iZlcjIWxS4AALjUzBE7WWHKAAAAAElFTkSuQmCC
 EOFILE;
-
 
 
 /*****************************************************
@@ -368,11 +380,38 @@ if(count($chunks) > 0) {
         }
     }
 }
+
+/**
+ *  Get projects
+ */
+$projects = [];
+$favorites = [];
+$saveFavorites = (isset($params['favorites']) && empty($params['favorites']) === false) ? true : false;
+
+// open directory
+$handle = opendir('.');
+// read each file/ folder in directory
+while($file = readdir($handle)) {
+    $file = trim($file);
+    //echo dirs out
+    if(is_dir($file) && !in_array($file, $params['projectsListIgnore'])) {
+        
+        if($saveFavorites === true && in_array($file, $params['favorites'])) {
+            $favorites[] = $file;
+        } else {
+            $projects[] = $file;
+        }
+    }
+}
+// close directory
+closedir($handle);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title><?= $_SERVER['HTTP_HOST'] .' - Project Index'?></title>
+    <title><?= $_SERVER['HTTP_HOST'] . ' - Project Index' ?></title>
     <meta charset="utf-8">
     <style type="text/css">
         * {
@@ -604,30 +643,32 @@ if(count($chunks) > 0) {
             <li><a href="<?= $params['documentation']['php']['defaultLink'] ?>" target="_blank">PHP</a></li>
             <li><a href="<?= $mysqlDocuLink ?>" target="_blank">MySQL</a></li>
         </ul>
+        <h2>Favorites</h2>
+        <ul class="projects">
+            <?php
+            //check that we have projects
+            if(count($favorites) === 0) {
+                echo '<li>No Favorites</li>';
+            } else {
+                foreach($favorites as $favorite) {
+                    echo '<li><a href="' . $favorite . '">' . $favorite . '</a></li>';
+                }
+            }
+            ?>
+        </ul>
     </div>
     <div class="col col-33">
         <!--   Projects   -->
         <h2>Projects</h2>
         <ul class="projects">
             <?php
-            
-            // open directory
-            $handle = opendir('.');
-            $countProjects = 0;
-            // read each file/ folder in directory
-            while($file = readdir($handle)) {
-                $file = trim($file);
-                //echo dirs out
-                if(is_dir($file) && !in_array($file, $params['projectsListIgnore'])) {
-                    echo '<li><a href="' . $file . '">' . $file . '</a></li>';
-                    $countProjects += 1;
-                }
-            }
-            // close directory
-            closedir($handle);
             //check that we have projects
-            if($countProjects === 0) {
+            if(count($projects) === 0) {
                 echo '<li>No Projects</li>';
+            } else {
+                foreach($projects as $project) {
+                    echo '<li><a href="' . $project . '">' . $project . '</a></li>';
+                }
             }
             ?>
         </ul>
@@ -691,7 +732,7 @@ if(count($chunks) > 0) {
         var toggleView = document.getElementById('toggleView');
         var extensions = document.getElementById('toggleExtensions');
         var hideClass = 'hide';
-    
+        
         /**
          * Checks if provided element has class
          *
@@ -705,7 +746,7 @@ if(count($chunks) > 0) {
             }
             return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
         }
-    
+        
         /**
          * Adds class to provided element
          *
@@ -719,7 +760,7 @@ if(count($chunks) > 0) {
                 el.className += " " + className;
             }
         }
-    
+        
         /**
          * Removes class from element
          *
@@ -734,7 +775,7 @@ if(count($chunks) > 0) {
                 el.className = el.className.replace(reg, ' ');
             }
         }
-    
+        
         /**
          * Toggles visibility over extensions list
          *
